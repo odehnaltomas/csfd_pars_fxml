@@ -10,10 +10,4 @@ package csfd_pars_fxml;
  * @author Tomas
  */
 public class InfoManager {
-    
-    public static int pocet = 0;
-    
-    public InfoManager() {
-        this.pocet++;
-    }
 }

@@ -33,8 +33,6 @@ public class FXMLMovieListController {
         
         InfoManager infoManager = new InfoManager();
         
-        System.out.println(InfoManager.pocet);
-        
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         dub_col.setCellValueFactory(new PropertyValueFactory<>("dubbings"));
         subtit_col.setCellValueFactory(new PropertyValueFactory<>("subtitles"));
@@ -62,7 +60,7 @@ public class FXMLMovieListController {
                 String subtitles = buffReader.readLine();
                 String url = buffReader.readLine();
                 
-                movies.add(new Movie(listOfFiles[i].getName(), dubbings, subtitles, url));
+                movies.add(new Movie(listOfFiles[i].getName(), dubbings, subtitles, url, listOfFiles[i].toString()));
             }
             catch(FileNotFoundException e) {
                 System.err.println("Soubor nenalezen!");
