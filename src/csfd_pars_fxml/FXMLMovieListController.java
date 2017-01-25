@@ -5,15 +5,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Collections;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
 
 public class FXMLMovieListController {
@@ -76,14 +77,26 @@ public class FXMLMovieListController {
         File folder = new File("C:\\Users\\Tomas\\Documents\\NetBeansProjects\\csfd_pars_fxml\\filmy");
         File[] listOfFiles = folder.listFiles();
         
-        for(int i = 0; i < listOfFiles.length; i++) {
+        for(File file: listOfFiles) {
             //System.out.println(listOfFiles[i].toString());
-            try (BufferedReader buffReader = new BufferedReader(new FileReader(new File(listOfFiles[i].toString() + "\\dubbing_subtitles_url.txt")))) {
+            try (BufferedReader buffReader = new BufferedReader(new FileReader(new File(file.toString() + "\\dubbing_subtitles_url.txt")))) {
                 String dubbings = buffReader.readLine();
                 String subtitles = buffReader.readLine();
                 String url = buffReader.readLine();
+                String movieFileName = "";
                 
-                movies.add(new Movie(listOfFiles[i].getName(), dubbings, subtitles, url, listOfFiles[i].toString()));
+                File[] movieFiles = file.listFiles();
+                for(File movieFile: movieFiles) {
+                    if(file.isFile()) {
+                        String[] fileName = file.getName().split("\\.(?=[^\\.]+$)");
+                        if(fileName[0].equalsIgnoreCase(movieFile.getName())) {
+                            movieFileName = fileName[0] + fileName[1];
+                        }
+                    }
+                }
+                
+                
+                movies.add(new Movie(file.getName(), dubbings, subtitles, url, file.toString(), movieFileName));
             }
             catch(FileNotFoundException e) {
                 System.err.println("Soubor nenalezen!");
@@ -96,6 +109,23 @@ public class FXMLMovieListController {
         Collections.sort(movies);
         
         return movies;
+    }
+    
+    
+    @FXML
+    void playMovie(MouseEvent event) {
+        if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+            Movie movie = table.getSelectionModel().getSelectedItem();
+            
+            //System.out.println("jo");
+            ProcessBuilder pb = new ProcessBuilder("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe", movie.getPath() + "\\" + movie.getMovieFileName());
+            try {
+                Process start = pb.start();
+            }
+            catch(Exception e) {
+                
+            }
+        }
     }
 
 }

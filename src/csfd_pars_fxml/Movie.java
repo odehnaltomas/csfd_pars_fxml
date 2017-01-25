@@ -22,14 +22,16 @@ public class Movie implements Comparable<Movie>{
     private String subtitles;
     private String url;
     private String path;
+    private String movieFileName;
     
     
-    public Movie(String name, String dubbings, String subtitles, String url, String path){
+    public Movie(String name, String dubbings, String subtitles, String url, String path, String movieFileName){
         this.name = name;
         this.dubbings = dubbings;
         this.subtitles = subtitles;
         this.url = url;
         this.path = path;
+        this.movieFileName = movieFileName;
     }
     
     //***SET METHODS***
@@ -53,6 +55,10 @@ public class Movie implements Comparable<Movie>{
         this.path = path;
     }
     
+    public void setMovieFileName(String movieFileName) {
+        this.movieFileName = movieFileName;
+    }
+    
     
     //***GET METHOTDS***
     public String getName() {
@@ -73,6 +79,10 @@ public class Movie implements Comparable<Movie>{
     
     public String getPath() {
         return this.path;
+    }
+    
+    public String getMovieFileName() {
+        return this.movieFileName;
     }
     
     

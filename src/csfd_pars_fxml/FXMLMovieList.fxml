@@ -26,7 +26,7 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="3">
                <children>
-                  <TableView fx:id="table" editable="true" layoutX="81.0" layoutY="215.0" prefHeight="783.0" prefWidth="642.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="table" editable="true" layoutX="81.0" layoutY="215.0" onMouseClicked="#playMovie" prefHeight="783.0" prefWidth="642.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="name_col" prefWidth="389.8929443359375" sortable="false" text="Název filmu" />
                       <TableColumn fx:id="dub_col" minWidth="0.0" prefWidth="145.8023681640625" sortable="false" text="Dabing" />
