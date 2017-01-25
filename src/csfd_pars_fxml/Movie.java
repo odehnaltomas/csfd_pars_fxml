@@ -22,14 +22,6 @@ public class Movie implements Comparable<Movie>{
     private String subtitles;
     private String url;
     private String path;
-    //TODO: +trailer/y, obrázek/ky
-    
-    private ArrayList<String> directing;
-    private ArrayList<String> writers;
-    private ArrayList<String> camera;
-    private ArrayList<String> soundtrackComposers;
-    private ArrayList<String> cast;
-    private ArrayList<String> contents;
     
     
     public Movie(String name, String dubbings, String subtitles, String url, String path){
@@ -61,30 +53,6 @@ public class Movie implements Comparable<Movie>{
         this.path = path;
     }
     
-    public void setDirecting(ArrayList<String> directing) {
-        this.directing = directing;
-    }
-    
-    public void setWriters(ArrayList<String> writers) {
-        this.writers = writers;
-    }
-    
-    public void setCamera(ArrayList<String> camera) {
-        this.camera = camera;
-    }
-    
-    public void setSoundtrackComposers(ArrayList<String> soundtrackComposers) {
-        this.soundtrackComposers = soundtrackComposers;
-    }
-    
-    public void setCast(ArrayList<String> cast) {
-        this.cast = cast;
-    }
-    
-    public void setContents(ArrayList<String> contents) {
-        this.contents = contents;
-    }
-    
     
     //***GET METHOTDS***
     public String getName() {
@@ -105,30 +73,6 @@ public class Movie implements Comparable<Movie>{
     
     public String getPath() {
         return this.path;
-    }
-    
-    public ArrayList<String> setDirecting() {
-        return this.directing;
-    }
-    
-    public ArrayList<String> setWriters() {
-        return this.writers;
-    }
-    
-    public ArrayList<String> setCamera() {
-        return this.camera;
-    }
-    
-    public ArrayList<String> setSoundtrackComposers() {
-        return this.soundtrackComposers;
-    }
-    
-    public ArrayList<String> setCast() {
-        return this.cast;
-    }
-    
-    public ArrayList<String> setContents() {
-        return this.contents;
     }
     
     
