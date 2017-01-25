@@ -74,7 +74,7 @@ public class FXMLMovieListController {
     private ObservableList<Movie> getMovies() {
         ObservableList<Movie> movies = FXCollections.observableArrayList();
         
-        File folder = new File("C:\\Users\\Tomas\\Documents\\NetBeansProjects\\csfd_pars_fxml\\filmy");
+        File folder = new File("C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy");
         File[] listOfFiles = folder.listFiles();
         
         for(File file: listOfFiles) {
