@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Collections;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.web.WebView;
 
 public class FXMLMovieListController {
+    
+    private InfoManager infoManager;
     
     @FXML
     private TableColumn<Movie, String> name_col;
@@ -26,12 +31,15 @@ public class FXMLMovieListController {
     
     @FXML
     private TableView<Movie> table;
-
+    
+    @FXML
+    private WebView webView;
+            
     @FXML
     void initialize() {
         assert table != null : "fx:id=\"table\" was not injected: check your FXML file 'FXMLMovieList.fxml'.";
         
-        InfoManager infoManager = new InfoManager();
+        this.infoManager = new InfoManager();
         
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         dub_col.setCellValueFactory(new PropertyValueFactory<>("dubbings"));
@@ -41,11 +49,26 @@ public class FXMLMovieListController {
         
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
         if (newSelection != null) {
-            System.out.println(table.getSelectionModel().getSelectedItem().getUrl());
-            
+            //System.out.println(table.getSelectionModel().getSelectedItem().getUrl());
+            this.showMovieInfo(table.getSelectionModel().getSelectedItem());
         }
-});
+        });
     }
+    
+    
+    private void showMovieInfo(Movie movie) {
+        try {
+            File site = this.infoManager.loadSite(movie);
+            webView.getEngine().load(site.toURI().toString());
+            System.out.println(site.toURI());
+        }
+        catch(Exception e) {
+            //System.out.println(e.getMessage());
+            File site = new File(System.getProperty("user.dir") + "\\Errors\\" + e.getMessage());
+            webView.getEngine().load(site.toURI().toString());
+        }
+    }
+    
     
     private ObservableList<Movie> getMovies() {
         ObservableList<Movie> movies = FXCollections.observableArrayList();

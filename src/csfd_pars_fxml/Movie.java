@@ -37,6 +37,7 @@ public class Movie implements Comparable<Movie>{
         this.dubbings = dubbings;
         this.subtitles = subtitles;
         this.url = url;
+        this.path = path;
     }
     
     //***SET METHODS***
