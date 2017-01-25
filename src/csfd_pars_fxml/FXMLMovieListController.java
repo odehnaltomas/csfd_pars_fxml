@@ -60,7 +60,7 @@ public class FXMLMovieListController {
         try {
             File site = this.infoManager.loadSite(movie);
             webView.getEngine().load(site.toURI().toString());
-            System.out.println(site.toURI());
+            //System.out.println(site.toURI());
         }
         catch(Exception e) {
             //System.out.println(e.getMessage());

@@ -5,9 +5,14 @@
  */
 package csfd_pars_fxml;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -78,14 +83,37 @@ public class InfoManager {
         bw.write("</html>");*/
         
         bw.write("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
+        File img = this.downloadImage(this.editUrl(document.select("div#poster img").first().absUrl("src")), movie.getPath() + "\\info\\poster.jpg");
+        
+        bw.write("<img src=\"" + img.toURI() + "\" style=\"height:450px\">");
+        
+        
         bw.write(document.select("h1").text() + "<br>");
-        Elements names = document.select("ul.names");
+        Elements names = document.select("ul.names li");
+        int i = 0;
         for(Element name: names) {
+            Element image = name.select("img").first();
+            img = this.downloadImage(image.absUrl("src"), movie.getPath() + "\\info\\" + i + ".gif");
+            i++;
+            
+            bw.write("<img src=\"" + img.toURI() + "\">");
             bw.write(name.text() + ", ");
         }
+        
         bw.write("<br>");
         bw.write(document.select("p.genre").text() + "<br>");
         bw.write(document.select("p.origin").text() + "<br>");
+        
+        Elements creators = document.select("div.creators div");
+        for(Element creator: creators) {
+            bw.write(creator.select("h4").text() + ": ");
+            
+            Elements people = creator.select("a");
+            for(Element person: people) {
+                bw.write(person.text() + ", ");
+            }
+            bw.write("<br>");
+        }
         
         Elements contents = document.select("div#plots div.content li");
         
@@ -94,5 +122,30 @@ public class InfoManager {
         }
         
         bw.close();
+    }
+    
+    private File downloadImage(String url, String imgPath) {
+        try {
+            URL url_new = new URL(url);
+            InputStream in = url_new.openStream();
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(new java.io.File(imgPath)));
+            
+            for(int b; (b = in.read()) != -1;) {
+                out.write(b);
+            }
+            
+            out.close();
+            in.close();
+        }
+        catch(Exception e) {
+            System.out.println("Obrázek nešel stáhnout!");
+        }
+        return new File(imgPath);
+    }
+    
+    
+    private String editUrl(String url) {
+        //System.out.println(url.substring(0, url.length()-5));
+        return url.substring(0, url.length()-5);
     }
 }
