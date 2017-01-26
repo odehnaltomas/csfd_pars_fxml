@@ -20,10 +20,8 @@ import javafx.scene.web.WebView;
 
 public class FXMLMovieListController {
     
-    private final String[] movieDirectories = {
-            "C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy",
-            "C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy2"
-            };
+    /** Contains all source directories, that contain movie directories **/
+    private ArrayList<String> movieDirectories = new ArrayList<String>();
     
     private InfoManager infoManager;
     
@@ -47,6 +45,21 @@ public class FXMLMovieListController {
         assert table != null : "fx:id=\"table\" was not injected: check your FXML file 'FXMLMovieList.fxml'.";
         
         this.infoManager = new InfoManager();
+        
+        try {
+            File directories = new File(System.getProperty("user.dir") + "\\directories.txt");
+            BufferedReader br = new BufferedReader(new FileReader(directories));
+            String line;
+            while((line = br.readLine()) != null) {
+                movieDirectories.add(line);
+            }
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("Soubor 'directories.txt' nebyl nalezen");
+        }
+        catch(IOException e) {
+            System.out.println("Nepovedlo se číst ze souboru!");
+        }
         
         name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         dub_col.setCellValueFactory(new PropertyValueFactory<>("dubbings"));
@@ -84,10 +97,12 @@ public class FXMLMovieListController {
     private ObservableList<Movie> getMovies() {
         ObservableList<Movie> movies = FXCollections.observableArrayList();
         
-        File[][] listOfDirectories = new File[movieDirectories.length][];
-        for(int i = 0; i < movieDirectories.length; i++) {
-            File dir = new File(movieDirectories[i]);
+        File[][] listOfDirectories = new File[movieDirectories.size()][];
+        int i = 0;
+        for(String directory: movieDirectories) {
+            File dir = new File(movieDirectories.get(i));
             listOfDirectories[i] = dir.listFiles();
+            i++;
         }
         /*
         File folder = new File("C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy");
