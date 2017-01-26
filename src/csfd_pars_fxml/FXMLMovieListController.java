@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
 
 public class FXMLMovieListController {
+    
+    private final String[] movieDirectories = {
+            "C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy",
+            "C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy2"
+            };
     
     private InfoManager infoManager;
     
@@ -78,39 +84,47 @@ public class FXMLMovieListController {
     private ObservableList<Movie> getMovies() {
         ObservableList<Movie> movies = FXCollections.observableArrayList();
         
+        File[][] listOfDirectories = new File[movieDirectories.length][];
+        for(int i = 0; i < movieDirectories.length; i++) {
+            File dir = new File(movieDirectories[i]);
+            listOfDirectories[i] = dir.listFiles();
+        }
+        /*
         File folder = new File("C:\\Users\\Tomas\\Documents\\NetBeansProjects\\filmy");
-        File[] listOfFiles = folder.listFiles();
+        File[] listOfFiles = folder.listFiles();*/
         
-        for(File file: listOfFiles) {
-            //System.out.println(listOfFiles[i].toString());
-            try (BufferedReader buffReader = new BufferedReader(new FileReader(new File(file.toString() + "\\dubbing_subtitles_url.txt")))) {
-                String dubbings = buffReader.readLine();
-                String subtitles = buffReader.readLine();
-                String url = buffReader.readLine();
-                String movieFileName = "";
-                
-                File[] movieFiles = file.listFiles();
-                for(File movieFile: movieFiles) {
-                    if(file.isFile()) {
-                        String[] fileName = file.getName().split("\\.(?=[^\\.]+$)");
-                        if(fileName[0].equalsIgnoreCase(movieFile.getName())) {
-                            movieFileName = fileName[0] + fileName[1];
+        for(File[] listOfFiles: listOfDirectories) {
+            for(File file: listOfFiles) {
+                //System.out.println(listOfFiles[i].toString());
+                try (BufferedReader buffReader = new BufferedReader(new FileReader(new File(file.toString() + "\\dubbing_subtitles_url.txt")))) {
+                    String dubbings = buffReader.readLine();
+                    String subtitles = buffReader.readLine();
+                    String url = buffReader.readLine();
+                    String movieFileName = "";
+
+                    File[] movieFiles = file.listFiles();
+                    for(File movieFile: movieFiles) {
+                        if(file.isFile()) {
+                            String[] fileName = file.getName().split("\\.(?=[^\\.]+$)");
+                            if(fileName[0].equalsIgnoreCase(movieFile.getName())) {
+                                movieFileName = fileName[0] + fileName[1];
+                            }
                         }
                     }
+
+                    movies.add(new Movie(file.getName(), dubbings, subtitles, url, file.toString(), movieFileName));
                 }
-                
-                movies.add(new Movie(file.getName(), dubbings, subtitles, url, file.toString(), movieFileName));
+                catch(FileNotFoundException e) {
+                    System.err.println("Soubor nenalezen!");
+                }
+                catch(IOException e) {
+                    System.err.println("nějaká jiná chyba!");
+                }
             }
-            catch(FileNotFoundException e) {
-                System.err.println("Soubor nenalezen!");
-            }
-            catch(IOException e) {
-                System.err.println("nějaká jiná chyba!");
-            }
+
+            
         }
-        
         Collections.sort(movies);
-        
         return movies;
     }
     

@@ -56,7 +56,7 @@ public class InfoManager {
     private void parseAndSave(Movie movie) throws Exception{
         Document document = null;
         if(movie.getUrl() == null){
-            System.out.println("tady");
+            //System.out.println("tady");
             throw new Exception("noUrl.html");
         }
         
