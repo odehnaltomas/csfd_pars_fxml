@@ -57,6 +57,10 @@ public class FXMLMovieListController {
     }
     
     
+    /**
+     * Show movie information or error message. Show local html file.
+     * @param movie Object of class Movie
+     */
     private void showMovieInfo(Movie movie) {
         try {
             File site = this.infoManager.loadSite(movie);
@@ -95,7 +99,6 @@ public class FXMLMovieListController {
                     }
                 }
                 
-                
                 movies.add(new Movie(file.getName(), dubbings, subtitles, url, file.toString(), movieFileName));
             }
             catch(FileNotFoundException e) {
@@ -112,6 +115,10 @@ public class FXMLMovieListController {
     }
     
     
+    /**
+     * Open VLC player and movie.
+     * @param event Has information about MouseEvent
+     */
     @FXML
     void playMovie(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

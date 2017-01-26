@@ -23,15 +23,13 @@ import org.jsoup.select.Elements;
  * @author Tomas
  */
 public class InfoManager {
-    /*
-    public static final String DIRECTING_FILE = "00_directing.txt";
-    public static final String WRITERS_FILE = "01_writers.txt";
-    public static final String CAMERA_FILE = "02_camera.txt";
-    public static final String SOUNDTRACK_COMPOSERS_FILE = "03_soundtrackComposers.txt";
-    public static final String CAST_FILE = "04_cast.txt";
-    public static final String CONTENTS_FILE = "05_contents.txt";
-    */
     
+    /**
+     * Load local Html site to selected movie. If html page does not exit, then @see this.parseAndSave(Movie) is called and page is shown.
+     * @param movie Object of Movie class
+     * @return Return file of local movie page
+     * @throws Exception Throw exception when error occur in @see this.parseAndSave(Movie)
+     */
     public File loadSite(Movie movie) throws Exception {
         File infoSite = new File(movie.getPath(), "info\\info.html");
         if(infoSite.exists()) {
@@ -50,6 +48,11 @@ public class InfoManager {
     }
     
     
+    /**
+     * Download specific information from http://www.csfd.cz/ site from movie page and puts it into new created html file.
+     * @param movie Object of Movie class
+     * @throws Exception Throw exception and messages are names of error html files
+     */
     private void parseAndSave(Movie movie) throws Exception{
         Document document = null;
         if(movie.getUrl() == null){
@@ -124,6 +127,13 @@ public class InfoManager {
         bw.close();
     }
     
+    
+    /**
+     * Download image form URL and saves it into movie directory (\<movieName>\info\<imageName>)
+     * @param url URL to image
+     * @param imgPath Destination where to save downloaded image
+     * @return Return downloaded destination
+     */
     private File downloadImage(String url, String imgPath) {
         try {
             URL url_new = new URL(url);
@@ -143,7 +153,13 @@ public class InfoManager {
         return new File(imgPath);
     }
     
-    
+    /**
+     * Cut last five characters from movie URL
+     * Example: http://img.csfd.cz/files/images/film/posters/000/049/49177_031300.jpg?h180
+     *          '?h180' is cut off
+     * @param url URL to http://www.csfd.cz/ to page of specific movie
+     * @return Return changed URL
+     */
     private String editUrl(String url) {
         //System.out.println(url.substring(0, url.length()-5));
         return url.substring(0, url.length()-5);
